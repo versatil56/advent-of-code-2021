@@ -1,0 +1,17 @@
+{
+  "name": "coding-dojo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest --config ./jest.config.json",
+    "test:tdd" : "npm run test -- --watchAll"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.2.2"
+  }
+}
