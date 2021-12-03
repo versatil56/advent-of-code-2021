@@ -1,47 +1,49 @@
 describe('On the 1st day of Christmas', () => {
-    describe("My raw measurements", () => {
-      it('was formatted into an array', () => {
-        let measurements = parseMeasurements(rawMeasurements);
-
-        expect(measurements.length).toBeGreaterThan(0);
+    describe('Advent Of Code brought to me', () => {
+      describe("A list of raw measurements", () => {
+        it('formatted into an array', () => {
+          let measurements = parseMeasurements(rawMeasurements);
+  
+          expect(measurements.length).toBeGreaterThan(0);
+        });
+  
+        it('with integers', () => {
+          let measurements = parseMeasurements(rawMeasurements);
+  
+          expect(measurements[0]).toEqual(122)
+        });
       });
-
-      it('had integers', () => {
-        let measurements = parseMeasurements(rawMeasurements);
-
-        expect(measurements[0]).toEqual(122)
-      });
-    });
-    describe("I was reading measurements", () => {
-      it('with only 1 measurement, there is no increase', () => {
-        let increaseNumber = calculateHowManyIncreases([5],0,0)
-
-        expect(increaseNumber).toEqual(0);
-      });
-
-      it('with two measurements, and last one is bigger, then there will an increase', () => {
-        let increaseNumber = calculateHowManyIncreases([1,2],0,0)
-
-        expect(increaseNumber).toEqual(1);
-      });
-
-      it('with more than two documents, it will calculate the increase', () => {
-        let increaseNumber = calculateHowManyIncreases([1,2,3],0,0)
-
-        expect(increaseNumber).toEqual(2);
+      describe("A measurement reader", () => {
+        it('with only 1 measurement, there is no increase', () => {
+          let increaseNumber = calculateHowManyIncreases([5],0,0)
+  
+          expect(increaseNumber).toEqual(0);
+        });
+  
+        it('with two measurements, and last one is bigger, then there will an increase', () => {
+          let increaseNumber = calculateHowManyIncreases([1,2],0,0)
+  
+          expect(increaseNumber).toEqual(1);
+        });
+  
+        it('with more than two documents, it will calculate the increase', () => {
+          let increaseNumber = calculateHowManyIncreases([1,2,3],0,0)
+  
+          expect(increaseNumber).toEqual(2);
+        })
+  
+        it('will not increase if the number has not actually increased', () => {
+          let increaseNumber = calculateHowManyIncreases([199,200,208,210,200,207,240,269,260,263],0,0)
+  
+          expect(increaseNumber).toEqual(7);
+        })
       })
-
-      it('will not increase if the number has not actually increased', () => {
-        let increaseNumber = calculateHowManyIncreases([199,200,208,210,200,207,240,269,260,263],0,0)
-
-        expect(increaseNumber).toEqual(7);
-      })
-    })
-    describe("I was working out my solution", () => {
-      it("And I got an answer", () => {
-        let increaseNumber = calculateHowManyIncreases(parseMeasurements(rawMeasurements),0,0)
-
-        expect(increaseNumber).toEqual(1462);
+      describe("A solution to the measurements", () => {
+        it("wiiiiiith an answer!", () => {
+          let increaseNumber = calculateHowManyIncreases(parseMeasurements(rawMeasurements),0,0)
+  
+          expect(increaseNumber).toEqual(1462);
+        })
       })
     })
 });
