@@ -50,16 +50,93 @@ describe('On the 1st day of Christmas', () => {
 
 describe('On the 2nd day of Christmas', () => {
   describe('Advent Of Code brought to me', () => {
+
+    describe("A navigation instruction parser", () => {
+      it("reads the instruction and the number", () => {
+        const instruction = getInstruction("forward 5");
+
+        expect(instruction).toEqual({
+          instruction: "forward",
+          measure: 5
+        })
+      })
+    })
     describe('A list of navigating instructions', () => {
-      it('formatted into an array', () => {
+      it('nicely formatted', () => {
         let measurements = parseNavigation(navigationInstructions);
 
-        expect(measurements.length).toBeGreaterThan(0);
+        expect(measurements[0]).toEqual({
+          instruction: "forward",
+          measure: 6
+        });
       });
+    })
+
+    describe('A set of navigation controls', () => {
+      describe('Where you can go forward', () => {
+        it('once', () => {
+          const navigationResult = navigate([{forward: 5}],0,{horizontal:0,depth:0});
+
+          expect(navigationResult.horizontal).toEqual(5);
+        });
+
+        it('more than once', () => {
+          const navigationResult = navigate([{forward: 5},{forward: 5},{forward: 5}],0,{horizontal:0,depth:0});
+
+          expect(navigationResult.horizontal).toEqual(15);
+        })
+
+        it('will not increase horizontal position if it is not forward', () => {
+          const navigationResult = navigate([{forward: 5},{forward: 5},{down: 5}],0,{horizontal:0,depth:0});
+
+          expect(navigationResult.horizontal).toEqual(10);
+        })
+      })
+
+      describe('Where you can go down', () => {
+        it('once', () => {
+          const navigationResult = navigate([{down: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(5);
+        });
+
+        it('more than once', () => {
+          const navigationResult = navigate([{down: 5},{down: 5},{down: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(15);
+        })
+
+        it('will not increase depth position if it is not down', () => {
+          const navigationResult = navigate([{down: 5},{down: 5},{forward: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(10);
+        })
+      })
     })
   })
 })
 
+const getInstruction = (instruction) => {
+  const splitInstruction = instruction.split(" ");
+  return {
+    instruction: splitInstruction[0],
+    measure: parseInt(splitInstruction[1])
+  }
+}
+
+const navigate = (instructions,previous,overallCourse) => {
+  if (instructions[previous].forward)
+    overallCourse.horizontal = overallCourse.horizontal + instructions[previous].forward
+
+  if (instructions[previous].down)
+    overallCourse.depth = overallCourse.depth + instructions[previous].down
+
+  if (previous+1 < instructions.length) {
+    return navigate(instructions,previous+1,overallCourse)
+  }
+
+  return overallCourse
+}
 const toArrayOfStrings = (elements) => {
   return elements.split("\n")
 }
@@ -69,7 +146,7 @@ const parseMeasurements = (rawMeasurements) => {
 }
 
 const parseNavigation = (navigationInstructions) => {
-  return toArrayOfStrings(navigationInstructions)
+  return toArrayOfStrings(navigationInstructions).map(i=>getInstruction(i))
 }
 
 const calculateHowManyIncreases = (measurements,previous,increases) => {
@@ -85,6 +162,7 @@ const calculateHowManyIncreases = (measurements,previous,increases) => {
 
   return increases;
 }
+
 
 const rawMeasurements = `122
 129
