@@ -1,5 +1,8 @@
-# minimal-node-with-jest
-`npm test` will run all your tests.
+# ADVENT OF CODE 2021
 
+![Sample](https://raw.githubusercontent.com/apolukhin/christmas-tree/master/docs/tree.png)
 
-`npm run test:tdd` will set your application in TDD mode and watch for any changes on any of your specs.
+(light are glowing in the terminal!)
+
+# Merry Christmas!!! Why on earth are you here???:
+If you look for the solutions then go to `spec.js` - `EVERYTHING (yep, thats right)` will be there!
