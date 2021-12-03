@@ -4,5 +4,5 @@
 
 (light are glowing in the terminal!)
 
-# Merry Christmas!!! Why on earth are you here???:
+# Merry Christmas!!!:
 If you look for the solutions then go to `spec.js` - `EVERYTHING (yep, thats right)` will be there!
