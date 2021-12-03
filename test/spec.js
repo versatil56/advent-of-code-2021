@@ -56,8 +56,7 @@ describe('On the 2nd day of Christmas', () => {
         const instruction = getInstruction("forward 5");
 
         expect(instruction).toEqual({
-          instruction: "forward",
-          measure: 5
+          forward : 5
         })
       })
     })
@@ -66,8 +65,7 @@ describe('On the 2nd day of Christmas', () => {
         let measurements = parseNavigation(navigationInstructions);
 
         expect(measurements[0]).toEqual({
-          instruction: "forward",
-          measure: 6
+          forward : 6
         });
       });
     })
@@ -112,16 +110,48 @@ describe('On the 2nd day of Christmas', () => {
           expect(navigationResult.depth).toEqual(10);
         })
       })
+
+      describe('Where you can go up', () => {
+        it('once', () => {
+          const navigationResult = navigate([{up: 5}],0,{depth:10,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(5);
+        });
+
+        it('more than once', () => {
+          const navigationResult = navigate([{up: 5},{up: 5},{up: 5}],0,{depth:15,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(0);
+        })
+
+        it('will not go up if the instruction is not to go up', () => {
+          const navigationResult = navigate([{down: 5},{down: 5},{forward: 5},{up: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(5);
+        })
+      })
+
+      describe("Where you can check your current position", () => {
+        it("at any given time", () => {
+          const navigationResult = navigate(parseNavigation(navigationInstructions),0,{depth:0,horizontal:0});
+          const position = getCurrentPosition(navigationResult);
+
+          expect(position).toEqual(2215080);
+        });
+      });
     })
   })
 })
 
+const getCurrentPosition = (position) => {
+  return position.depth * position.horizontal;
+}
+
 const getInstruction = (instruction) => {
   const splitInstruction = instruction.split(" ");
-  return {
-    instruction: splitInstruction[0],
-    measure: parseInt(splitInstruction[1])
-  }
+  let position = {}
+  position[`${splitInstruction[0]}`]= parseInt(splitInstruction[1])
+  return position
 }
 
 const navigate = (instructions,previous,overallCourse) => {
@@ -130,6 +160,9 @@ const navigate = (instructions,previous,overallCourse) => {
 
   if (instructions[previous].down)
     overallCourse.depth = overallCourse.depth + instructions[previous].down
+
+  if (instructions[previous].up)
+    overallCourse.depth = overallCourse.depth - instructions[previous].up
 
   if (previous+1 < instructions.length) {
     return navigate(instructions,previous+1,overallCourse)
