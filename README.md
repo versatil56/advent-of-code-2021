@@ -4,5 +4,5 @@
 
 (light are glowing in the terminal!)
 
-# Merry Christmas!!!:
-If you look for the solutions then go to `spec.js` - `EVERYTHING (yep, thats right)` will be there!
+# Merry Christmas,lets sing a carol!!!:
+You will find the `jest` lyrics on `spec.js` - enjoy it!
