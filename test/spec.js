@@ -46,158 +46,8 @@ describe('On the 1st day of Christmas', () => {
         })
       })
     })
-});
 
-describe('On the 2nd day of Christmas', () => {
-  describe('Advent Of Code brought to me', () => {
-
-    describe("A navigation instruction parser", () => {
-      it("reads the instruction and the number", () => {
-        const instruction = getInstruction("forward 5");
-
-        expect(instruction).toEqual({
-          forward : 5
-        })
-      })
-    })
-    describe('A list of navigating instructions', () => {
-      it('nicely formatted', () => {
-        let measurements = parseNavigation(navigationInstructions);
-
-        expect(measurements[0]).toEqual({
-          forward : 6
-        });
-      });
-    })
-
-    describe('A set of navigation controls', () => {
-      describe('Where you can go forward', () => {
-        it('once', () => {
-          const navigationResult = navigate([{forward: 5}],0,{horizontal:0,depth:0});
-
-          expect(navigationResult.horizontal).toEqual(5);
-        });
-
-        it('more than once', () => {
-          const navigationResult = navigate([{forward: 5},{forward: 5},{forward: 5}],0,{horizontal:0,depth:0});
-
-          expect(navigationResult.horizontal).toEqual(15);
-        })
-
-        it('will not increase horizontal position if it is not forward', () => {
-          const navigationResult = navigate([{forward: 5},{forward: 5},{down: 5}],0,{horizontal:0,depth:0});
-
-          expect(navigationResult.horizontal).toEqual(10);
-        })
-      })
-
-      describe('Where you can go down', () => {
-        it('once', () => {
-          const navigationResult = navigate([{down: 5}],0,{depth:0,horizontal:0});
-
-          expect(navigationResult.depth).toEqual(5);
-        });
-
-        it('more than once', () => {
-          const navigationResult = navigate([{down: 5},{down: 5},{down: 5}],0,{depth:0,horizontal:0});
-
-          expect(navigationResult.depth).toEqual(15);
-        })
-
-        it('will not increase depth position if it is not down', () => {
-          const navigationResult = navigate([{down: 5},{down: 5},{forward: 5}],0,{depth:0,horizontal:0});
-
-          expect(navigationResult.depth).toEqual(10);
-        })
-      })
-
-      describe('Where you can go up', () => {
-        it('once', () => {
-          const navigationResult = navigate([{up: 5}],0,{depth:10,horizontal:0});
-
-          expect(navigationResult.depth).toEqual(5);
-        });
-
-        it('more than once', () => {
-          const navigationResult = navigate([{up: 5},{up: 5},{up: 5}],0,{depth:15,horizontal:0});
-
-          expect(navigationResult.depth).toEqual(0);
-        })
-
-        it('will not go up if the instruction is not to go up', () => {
-          const navigationResult = navigate([{down: 5},{down: 5},{forward: 5},{up: 5}],0,{depth:0,horizontal:0});
-
-          expect(navigationResult.depth).toEqual(5);
-        })
-      })
-
-      describe("Where you can check your current position", () => {
-        it("at any given time", () => {
-          const navigationResult = navigate(parseNavigation(navigationInstructions),0,{depth:0,horizontal:0});
-          const position = getCurrentPosition(navigationResult);
-
-          expect(position).toEqual(2215080);
-        });
-      });
-    })
-  })
-})
-
-const getCurrentPosition = (position) => {
-  return position.depth * position.horizontal;
-}
-
-const getInstruction = (instruction) => {
-  const splitInstruction = instruction.split(" ");
-  let position = {}
-  position[`${splitInstruction[0]}`]= parseInt(splitInstruction[1])
-  return position
-}
-
-const navigate = (instructions,previous,overallCourse) => {
-  if (instructions[previous].forward)
-    overallCourse.horizontal = overallCourse.horizontal + instructions[previous].forward
-
-  if (instructions[previous].down)
-    overallCourse.depth = overallCourse.depth + instructions[previous].down
-
-  if (instructions[previous].up)
-    overallCourse.depth = overallCourse.depth - instructions[previous].up
-
-  if (previous+1 < instructions.length) {
-    return navigate(instructions,previous+1,overallCourse)
-  }
-
-  return overallCourse
-}
-const toArrayOfStrings = (elements) => {
-  return elements.split("\n")
-}
-
-const parseMeasurements = (rawMeasurements) => {
-  return toArrayOfStrings(rawMeasurements).map(i=>parseInt(i))
-}
-
-const parseNavigation = (navigationInstructions) => {
-  return toArrayOfStrings(navigationInstructions).map(i=>getInstruction(i))
-}
-
-const calculateHowManyIncreases = (measurements,previous,increases) => {
-  if (measurements.length == 1) return increases;
-
-  if (measurements[previous+1] > measurements[previous]) {
-    increases++;
-  }
-
-  if (previous+1 < measurements.length) {
-    return calculateHowManyIncreases(measurements,previous+1,increases)
-  }
-
-  return increases;
-}
-
-
-const rawMeasurements = `122
+    const rawMeasurements = `122
 129
 116
 122
@@ -2198,7 +2048,152 @@ const rawMeasurements = `122
 6601
 6632`
 
-const navigationInstructions = `forward 6
+    const parseMeasurements = (rawMeasurements) => {
+      return toArrayOfStrings(rawMeasurements).map(i=>parseInt(i))
+    }
+
+    const calculateHowManyIncreases = (measurements,previous,increases) => {
+      if (measurements.length == 1) return increases;
+
+      if (measurements[previous+1] > measurements[previous]) {
+        increases++;
+      }
+
+      if (previous+1 < measurements.length) {
+        return calculateHowManyIncreases(measurements,previous+1,increases)
+      }
+
+      return increases;
+    }
+});
+
+describe('On the 2nd day of Christmas', () => {
+  describe('Advent Of Code brought to me', () => {
+
+    describe("A navigation instruction parser", () => {
+      it("reads the instruction and the number", () => {
+        const instruction = getInstruction("forward 5");
+
+        expect(instruction).toEqual({
+          forward : 5
+        })
+      })
+    })
+    describe('A list of navigating instructions', () => {
+      it('nicely formatted', () => {
+        let measurements = parseNavigation(navigationInstructions);
+
+        expect(measurements[0]).toEqual({
+          forward : 6
+        });
+      });
+    })
+
+    describe('A set of navigation controls', () => {
+      describe('Where you can go forward', () => {
+        it('once', () => {
+          const navigationResult = navigate([{forward: 5}],0,{horizontal:0,depth:0});
+
+          expect(navigationResult.horizontal).toEqual(5);
+        });
+
+        it('more than once', () => {
+          const navigationResult = navigate([{forward: 5},{forward: 5},{forward: 5}],0,{horizontal:0,depth:0});
+
+          expect(navigationResult.horizontal).toEqual(15);
+        })
+
+        it('will not increase horizontal position if it is not forward', () => {
+          const navigationResult = navigate([{forward: 5},{forward: 5},{down: 5}],0,{horizontal:0,depth:0});
+
+          expect(navigationResult.horizontal).toEqual(10);
+        })
+      })
+
+      describe('Where you can go down', () => {
+        it('once', () => {
+          const navigationResult = navigate([{down: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(5);
+        });
+
+        it('more than once', () => {
+          const navigationResult = navigate([{down: 5},{down: 5},{down: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(15);
+        })
+
+        it('will not increase depth position if it is not down', () => {
+          const navigationResult = navigate([{down: 5},{down: 5},{forward: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(10);
+        })
+      })
+
+      describe('Where you can go up', () => {
+        it('once', () => {
+          const navigationResult = navigate([{up: 5}],0,{depth:10,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(5);
+        });
+
+        it('more than once', () => {
+          const navigationResult = navigate([{up: 5},{up: 5},{up: 5}],0,{depth:15,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(0);
+        })
+
+        it('will not go up if the instruction is not to go up', () => {
+          const navigationResult = navigate([{down: 5},{down: 5},{forward: 5},{up: 5}],0,{depth:0,horizontal:0});
+
+          expect(navigationResult.depth).toEqual(5);
+        })
+      })
+
+      describe("Where you can check your current position", () => {
+        it("at any given time", () => {
+          const navigationResult = navigate(parseNavigation(navigationInstructions),0,{depth:0,horizontal:0});
+          const position = getCurrentPosition(navigationResult);
+
+          expect(position).toEqual(2215080);
+        });
+      });
+    })
+  })
+
+  const getCurrentPosition = (position) => {
+    return position.depth * position.horizontal;
+  }
+  
+  const getInstruction = (instruction) => {
+    const splitInstruction = instruction.split(" ");
+    let position = {}
+    position[`${splitInstruction[0]}`]= parseInt(splitInstruction[1])
+    return position
+  }
+  
+  const navigate = (instructions,previous,overallCourse) => {
+    if (instructions[previous].forward)
+      overallCourse.horizontal = overallCourse.horizontal + instructions[previous].forward
+  
+    if (instructions[previous].down)
+      overallCourse.depth = overallCourse.depth + instructions[previous].down
+  
+    if (instructions[previous].up)
+      overallCourse.depth = overallCourse.depth - instructions[previous].up
+  
+    if (previous+1 < instructions.length) {
+      return navigate(instructions,previous+1,overallCourse)
+    }
+  
+    return overallCourse
+  }
+  
+  const parseNavigation = (navigationInstructions) => {
+    return toArrayOfStrings(navigationInstructions).map(i=>getInstruction(i))
+  }
+
+  const navigationInstructions = `forward 6
 down 8
 down 5
 down 9
@@ -3198,3 +3193,11 @@ down 7
 down 8
 down 3
 forward 6`
+})
+
+
+const toArrayOfStrings = (elements) => {
+  return elements.split("\n")
+}
+
+
